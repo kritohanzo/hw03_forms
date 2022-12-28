@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}
+  {% if is_edit == 1 %}
+    Редактирование записи
+  {% else %}
+    Новая запись
+  {% endif %}
+{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">
+          {% if is_edit == 1 %}
+            Редактирование записи
+          {% else %}
+            Новая запись
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <form method="post"
+                action=" {% if is_edit == 1 %} {% url 'posts:post_edit' post_id=post.id %} {% else %} {% url 'posts:post_create' %} {% endif %}">
+            {% csrf_token %}
+            <div class="form-group row my-3 p-3">
+              <label for="id_text">
+                Текст записи
+                <span class="required text-danger">*</span>
+              </label>
+              <textarea name="text" cols="40" rows="10" class="form-control" required id="id_text">{{ post.text }}</textarea>
+              <small id="id_text-help" class="form-text text-muted">
+                {% if is_edit == 1 %}
+                  Текст редактирумой записи
+                {% else %}
+                  Текст новой записи
+                {% endif %}
+              </small>
+            </div>
+            <div class="form-group row my-3 p-3">
+              <label for="id_group">Группа</label>
+              <select name="group" class="form-control" id="id_group">
+                {% if post.group_id == 1 %}
+                  <option value="1" selected>
+                    ADMIN
+                  </option>
+                  <option value="2">
+                    MODER
+                  </option>
+                  <option value="3">
+                    VIP
+                  </option>
+                {% elif post.group_id == 2 %}
+                  <option value="1">
+                    ADMIN
+                  </option>
+                  <option value="2" selected>
+                    MODER
+                  </option>
+                  <option value="3">
+                    VIP
+                  </option>
+                {% elif post.group_id == 3 %}
+                  <option value="1">
+                    ADMIN
+                  </option>
+                  <option value="2">
+                    MODER
+                  </option>
+                  <option value="3" selected>
+                    VIP
+                  </option>
+                {% else %}
+                  <option value="" selected>
+                    -------
+                  </option>
+                  <option value="1">
+                    ADMIN
+                  </option>
+                  <option value="2">
+                    MODER
+                  </option>
+                  <option value="3">
+                    VIP
+                  </option>
+                {% endif %}
+              </select>
+              <small id="id_group-help" class="form-text text-muted">Группа, к которой будет относиться запись</small>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">
+                {% if is_edit == 1 %}
+                  Сохранить
+                {% else %}
+                  Добавить
+                {% endif %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
