@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     "posts.apps.PostsConfig",
     "users.apps.UsersConfig",
     "core.apps.CoreConfig",
-    "about.apps.AboutConfig"
+    "about.apps.AboutConfig",
 ]
 
 MIDDLEWARE = [
@@ -49,7 +49,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'core.context_processors.year.year',
+                "core.context_processors.year.year",
             ],
         },
     },
@@ -97,10 +97,10 @@ STATIC_URL = "/static/"
 STATICFILES_DIR = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [STATICFILES_DIR]
 
-LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'posts:index'
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "posts:index"
 # LOGOUT_REDIRECT_URL = 'posts:index'
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
