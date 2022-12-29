@@ -1,18 +1,21 @@
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Group, Post, User
+from django.shortcuts import get_object_or_404, redirect, render
+
 from .forms import PostForm
+from .models import Group, Post, User
 
 
 POSTS_PER_PAGE = 10
-
+def paginator(request, queryset, number_page):
+    paginator = Paginator(queryset, number_page)
+    page_number = request.GET.get("page")
+    page_object = paginator.get_page(page_number)
+    return page_object
 
 def index(request):
     posts = Post.objects.all()
-    paginator = Paginator(posts, POSTS_PER_PAGE)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginator(request, posts, POSTS_PER_PAGE)
     template = "posts/index.html"
     context = {"page_obj": page_obj}
     return render(request, template, context)
@@ -21,9 +24,7 @@ def index(request):
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = group.posts.all()
-    paginator = Paginator(posts, POSTS_PER_PAGE)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginator(request, posts, POSTS_PER_PAGE)
     template = "posts/group_list.html"
     context = {"group": group, "page_obj": page_obj}
     return render(request, template, context)
@@ -56,12 +57,12 @@ def post_detail(request, post_id):
 @login_required
 def post_create(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST or None)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect("posts:profile", username=post.author)
+            return redirect("posts:profile", username=post.author.username)
         template = "posts/create_post.html"
         context = {"form": form}
         return render(request, template, context)
@@ -77,11 +78,9 @@ def post_edit(request, post_id):
     if post.author_id != request.user.id:
         return redirect("posts:post_detail", post_id=post.pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST or None, instance=post)
         if form.is_valid():
-            post = form.save()
-            post.author_id = request.user
-            post.save()
+            form.save()
             return redirect("posts:post_detail", post_id=post.pk)
         template = "posts/create_post.html"
         context = {"form": form}

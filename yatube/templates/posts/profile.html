@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}Профайл пользователя {{ username.get_full_name }}{% endblock %}
 {% block content %}
-    <h1>Все посты пользователя {{ username.get_full_name }}</h1>
+    <h1>
+        Все посты пользователя
+        {% if username.get_full_name %}
+            {{ username.get_full_name }}
+        {% else %}
+            {{ username.username }}
+        {% endif %}
+    </h1>
     <h3>Всего постов: {{ page_obj.paginator.count }}</h3>
     {% for post in page_obj %}
         {% include 'includes/post.html' %}
