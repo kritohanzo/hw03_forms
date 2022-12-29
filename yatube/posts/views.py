@@ -7,11 +7,14 @@ from .models import Group, Post, User
 
 
 POSTS_PER_PAGE = 10
+
+
 def paginator(request, queryset, number_page):
     paginator = Paginator(queryset, number_page)
     page_number = request.GET.get("page")
     page_object = paginator.get_page(page_number)
     return page_object
+
 
 def index(request):
     posts = Post.objects.all()
