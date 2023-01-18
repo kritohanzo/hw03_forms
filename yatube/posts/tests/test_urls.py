@@ -35,7 +35,7 @@ class StaticURLTests(TestCase):
         
 
     def test_post_public_urls_with_guest_client(self):
-        '''[POSTS] Проверяем, что публичные страницы отлично работают с анонимным пользователем.'''
+        '''[POSTS URLS] Проверяем, что публичные страницы отлично работают с анонимным пользователем.'''
         public_urls = {
             '/': HTTPStatus.OK,
             '/group/test-group/': HTTPStatus.OK,
@@ -49,7 +49,7 @@ class StaticURLTests(TestCase):
                 self.assertEquals(response.status_code, status_code, f'Страница {url} работает не правильно')
 
     def test_post_redirects_on_login_with_guest_client(self):
-        '''[POSTS] Проверяем, что у страниц /create/ и /posts/post_id/edit/ работают редиректы на логин с анонимным пользователем.'''
+        '''[POSTS URLS] Проверяем, что у страниц /create/ и /posts/post_id/edit/ работают редиректы на логин с анонимным пользователем.'''
         public_urls = {
             '/create/': '/auth/login/?next=/create/',
             '/posts/1/edit/': '/auth/login/?next=/posts/1/edit/',
@@ -60,18 +60,18 @@ class StaticURLTests(TestCase):
                 self.assertRedirects(response, redirect_url_with_follow, msg_prefix=f'Страница {url} работает не правильно')
 
     def test_post_edit_with_author_client(self):
-        '''[POSTS] Проверяем, что cтраница /posts/post_id/edit/ работает с автором.'''
+        '''[POSTS URLS] Проверяем, что cтраница /posts/post_id/edit/ работает с автором.'''
         response = self.auth_client_author.get('/posts/1/edit/')
         self.assertEquals(response.status_code, 200, 'Страница /posts/1/edit/ работает не правильно с пользователем-автором.')
 
     
     def test_post_edit_with_not_author_client(self):
-        '''[POSTS] Проверяем, что cтраница /posts/post_id/edit/ не даёт редактировать пост если клиент - не автор.'''
+        '''[POSTS URLS] Проверяем, что cтраница /posts/post_id/edit/ не даёт редактировать пост если клиент - не автор.'''
         response = self.auth_client_not_author.get('/posts/1/edit/')
         self.assertRedirects(response, '/posts/1/', msg_prefix='Страница /posts/1/edit/ работает не правильно, если пользователь не автор.')
 
     def test_post_uses_correct_templates(self):
-        '''[POSTS] Проверяем, что все страницы используют правильные шаблоны.'''
+        '''[POSTS URLS] Проверяем, что все страницы используют правильные шаблоны.'''
         url_templates = {
             '/': 'posts/index.html',
             '/group/test-group/': 'posts/group_list.html',

@@ -9,7 +9,7 @@ class TestURLAbout(TestCase):
         cls.guest_client = Client()
 
     def test_about_url_is_working(self):
-        '''[ABOUT] Проверяем, что все ссылки приложения работают исправно.'''
+        '''[ABOUT URLS] Проверяем, что все ссылки приложения работают исправно.'''
         urls = {
             '/about/author/': HTTPStatus.OK,
             '/about/tech/': HTTPStatus.OK
@@ -20,7 +20,7 @@ class TestURLAbout(TestCase):
                 self.assertEqual(response.status_code, status, f'Ссылка {url} работает не правильно.')
     
     def test_about_url_is_working(self):
-        '''[ABOUT] Проверяем, что все ссылки приложения используют нужные шаблоны.'''
+        '''[ABOUT URLS] Проверяем, что все ссылки приложения используют нужные шаблоны.'''
         urls = {
             '/about/author/': 'about/author.html',
             '/about/tech/': 'about/tech.html'

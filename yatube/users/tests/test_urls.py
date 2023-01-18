@@ -18,7 +18,7 @@ class TestURLUsers(TestCase):
         
 
     def test_users_anonymous_client(self):
-        '''[USERS] Проверяем, что все страницы приложения работают с анонимным клиентом.'''
+        '''[USERS URLS] Проверяем, что все страницы приложения работают с анонимным клиентом.'''
         urls = {
             "/auth/logout/": HTTPStatus.OK,
             "/auth/signup/": HTTPStatus.OK,
@@ -36,7 +36,7 @@ class TestURLUsers(TestCase):
                 self.assertEqual(response.status_code, status, f'Страница {url} работает не правильно')
 
     def test_users_anonymous_client_redirect_on_login(self):
-        '''[USERS] Проверяем, что некоторые страницы приложения редиректят анонимный клиент на логин.'''
+        '''[USERS URLS] Проверяем, что некоторые страницы приложения редиректят анонимный клиент на логин.'''
         urls = {
             "/auth/password_change/": '/auth/login/?next=/auth/password_change/',
             "/auth/password_change/done/": '/auth/login/?next=/auth/password_change/done/'
@@ -48,7 +48,7 @@ class TestURLUsers(TestCase):
                 self.assertRedirects(response, expected_url, msg_prefix=f'Страница {url} работает не правильно')
 
     def test_users_correct_templates(self):
-        '''[USERS] Проверяем, что все страницы приложения работают с нужным шаблоном.'''
+        '''[USERS URLS] Проверяем, что все страницы приложения работают с нужным шаблоном.'''
         urls = {
             "/auth/password_change/": "users/password_change_form.html",
             "/auth/password_change/done/": "users/password_change_done.html",
